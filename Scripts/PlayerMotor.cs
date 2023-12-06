@@ -8,7 +8,11 @@ public class PlayerMotor : MonoBehaviour
     private CharacterController controller;
     private Vector3 playerVelocity;
 
+    private bool isGrounded;
+
     public float speed = 5f;
+    public float jumpHeigh = 1f;
+    public float gravity = -9.8f;
 
     void Start()
     {
@@ -17,7 +21,9 @@ public class PlayerMotor : MonoBehaviour
 
     void Update()
     {
-        
+        //El Charactercontroller ya tiene una variable seteada "isGrounded"
+        //Hacemos referencia a esa variable del controller
+        isGrounded = controller.isGrounded;
     }
 
     //Recibe el input del InputManager.cs y las aplica dentro del componente del Character Controller
@@ -28,6 +34,34 @@ public class PlayerMotor : MonoBehaviour
         moveDirection.x = input.x; //Asigna el valor del input.x al eje x del vector
         moveDirection.z = input.y; //[!] IMPORTANTE : moveDirection.Z (y no "moveDirection.Y") [!]
 
-        controller.Move(transform.TransformDirection(moveDirection) * speed * Time.deltaTime); //Aplica el vector de moveDirection a una función "Move" ya implementada dentro del Character Controller
+        //Aplicar el vector de moveDirection a una función "Move" ya implementada dentro del Character Controller
+        controller.Move(transform.TransformDirection(moveDirection) * speed * Time.deltaTime);
+
+
+        //Aplicar Gravedad
+        playerVelocity.y += gravity * Time.deltaTime;
+
+        if (isGrounded && playerVelocity.y < 0) //Solo aplica si no está saltando
+        {
+            //Aplica un valor fijo, para que no incremente con el paso del tiempo,
+            //ya que si no, llegaría un momento en el cual la gravedad sería tan alta que sería imposible saltar
+            playerVelocity.y = -2f;
+        }
+
+        controller.Move(playerVelocity * Time.deltaTime);
+
+        Debug.Log("[ ! ] On Floor : " + isGrounded);
+    }
+
+
+    //Salto
+    public void Jump()
+    {
+        //Solo permite saltar si estamos en el suelo
+        if (isGrounded)
+        {
+            //Aplica velocidad en el eje y
+            playerVelocity.y = Mathf.Sqrt(jumpHeigh * -3.0f * gravity);
+        }
     }
 }
