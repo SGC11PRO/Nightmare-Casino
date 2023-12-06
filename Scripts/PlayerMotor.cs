@@ -10,8 +10,15 @@ public class PlayerMotor : MonoBehaviour
 
     private bool isGrounded;
 
+    [Header("Movement")]
+    [Range(0, 10)]
     public float speed = 5f;
+
+    [Range(0, 5)]
     public float jumpHeigh = 1f;
+
+
+    [Header("Physics")]
     public float gravity = -9.8f;
 
     void Start()
