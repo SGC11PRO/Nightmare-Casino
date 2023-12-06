@@ -16,6 +16,10 @@ public class InputManager : MonoBehaviour
         playerInput = new PlayerInput();
         onFoot = playerInput.OnFoot;
         playerMotor = GetComponent<PlayerMotor>();
+
+        //Asignar acción "Jump"
+        //Cada vez que llamamos a la acción jump (pulsando espacio) => Ejecuta la funcion jump del playermotor
+        onFoot.Jump.performed += ctx => playerMotor.Jump(); //ctx = "Callback Context"
     }
 
     void FixedUpdate()
