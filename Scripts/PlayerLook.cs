@@ -8,13 +8,30 @@ public class PlayerLook : MonoBehaviour
     public Camera cam;
     private float xRotation = 0f;
 
+    private PlayerMotor playerMotor;
+
     [Header("Camera Settings")]
-    [Range(0, 30)]
-    public float xSensitivity = 20f;
 
-    [Range(0, 30)]
-    public float ySensitivity = 20f;
+    [Range(0, 30)] public float xSensitivity = 20f;
+    [Range(0, 30)] public float ySensitivity = 20f;
 
+    [Header("Headbob Settings")]
+    [Range(0, 20f)]public float walkBobSpeed = 14f;
+    [Range(0, 0.25f)] public float walkBobAmount = 0.05f;
+
+    [Range(0, 20f)] public float sprintBobSpeed = 18f;
+    [Range(0, 0.5f)] public float sprintBobAmount = 0.1f;
+
+    public float defaultYpos = 0f;
+    public float timer;
+
+    private void Awake()
+    {
+        defaultYpos = cam.transform.localPosition.y;
+
+        //ASIGNAR SCRIPTS
+        playerMotor = GetComponent<PlayerMotor>();
+    }
 
     //Player look function
     public void Look(Vector2 input)
@@ -32,5 +49,27 @@ public class PlayerLook : MonoBehaviour
 
         //Rotar el jugador derecha/izquierda
         this.transform.Rotate(Vector3.up * (mouseX * Time.deltaTime) * xSensitivity);
+    }
+
+    public void Headbob()
+    {
+        if (playerMotor.isGrounded != true) return; //si el jugador no esta en el suelo, omite el código a continuación
+        
+        //Comprueba si el personaje se esta moviendo
+        if(Mathf.Abs(playerMotor.moveX) > 0.1f || Mathf.Abs(playerMotor.moveZ) > 0.1f)
+        {
+            //Aplica la velocidad de sprint al headbob cuando esta sprintando
+            if (playerMotor.sprint == true) timer += Time.deltaTime * sprintBobSpeed;
+
+            //Aplica la velocidad normal al headbob cuando no esta sprintando
+            if (playerMotor.sprint != true) timer += Time.deltaTime * walkBobSpeed;
+
+            //Aplica el headbob a la camara
+            cam.transform.localPosition = new Vector3(
+                cam.transform.localPosition.x,
+                defaultYpos + Mathf.Sin(timer * (playerMotor.sprint ? sprintBobAmount : walkBobAmount)), //Comprueba si estamos sprintando ("?") o no (":"), y aplica las respectivas cantindades
+                cam.transform.localPosition.z
+                );
+        }
     }
 }
