@@ -30,12 +30,28 @@ public class InputManager : MonoBehaviour
     {
         //Envía al script de PlayerMotor los valores del input para que lo utilice en la función de "PlayerMove"
         playerMotor.PlayerMove(onFoot.Movement.ReadValue<Vector2>()); //llama a la función de "PlayerMove" asignandole los valores del action map ("onFoot")
+
+
+        //Sprint Activar/desactivar
+        if(onFoot.Sprint.IsPressed() == true)
+        {
+            playerMotor.sprint = true; //devuelve el valor a la variable de PlayerMotor
+        }
+        else
+        {
+            playerMotor.sprint = false; //""
+        }
+
+        Debug.Log(onFoot.Sprint.IsPressed());
     }
 
     private void LateUpdate()
     {
         //Envia al script de PlayerLook los valores del map action "Look"
         playerLook.Look(onFoot.Look.ReadValue<Vector2>());
+
+        //Llama a la funcion del headbob
+        playerLook.Headbob();
     }
 
     //Enable Inputs
