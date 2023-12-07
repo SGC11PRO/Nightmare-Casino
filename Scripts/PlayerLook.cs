@@ -16,14 +16,14 @@ public class PlayerLook : MonoBehaviour
     [Range(0, 30)] public float ySensitivity = 20f;
 
     [Header("Headbob Settings")]
-    [Range(0, 20f)]public float walkBobSpeed = 14f;
-    [Range(0, 0.25f)] public float walkBobAmount = 0.05f;
+    [Range(0, 20f)]public float walkBobSpeed = 15f;
+    [Range(0, 0.25f)] public float walkBobAmount = 0.1f;
 
-    [Range(0, 20f)] public float sprintBobSpeed = 18f;
-    [Range(0, 0.5f)] public float sprintBobAmount = 0.1f;
+    [Range(0, 20f)] public float sprintBobSpeed = 20f;
+    [Range(0, 0.5f)] public float sprintBobAmount = 0.15f;
 
-    public float defaultYpos = 0f;
-    public float timer;
+    private float defaultYpos = 0.6f;
+    private float timer;
 
     private void Awake()
     {
@@ -67,7 +67,7 @@ public class PlayerLook : MonoBehaviour
             //Aplica el headbob a la camara
             cam.transform.localPosition = new Vector3(
                 cam.transform.localPosition.x,
-                defaultYpos + Mathf.Sin(timer * (playerMotor.sprint ? sprintBobAmount : walkBobAmount)), //Comprueba si estamos sprintando ("?") o no (":"), y aplica las respectivas cantindades
+                defaultYpos + Mathf.Sin(timer) * (playerMotor.sprint ? sprintBobAmount : walkBobAmount), //Comprueba si estamos sprintando ("?") o no (":"), y aplica las respectivas cantindades
                 cam.transform.localPosition.z
                 );
         }
