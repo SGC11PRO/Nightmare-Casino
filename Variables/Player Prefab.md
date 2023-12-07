@@ -3,20 +3,20 @@
 - No variables
 ---
 ### PLAYER MOTOR SCRIPT
-- **Statements** [!] Debug Values
-- **Debug Values** [!] Debug Values
+- **Statements** [ ! ] Debug Values
+- **Debug Values** [ ! ] Debug Values
   
 - **Movment Settings**
-  - Sprint [!] Debug Value
+  - Sprint [ ! ] Debug Value
   - Move Speed = 4
   - Sprint Speed = 4.5
   - Jump Heigh = 1
     
 - **Physics Settings**
-  - Gravity = 9.8 [!] Static Value
+  - Gravity = 9.8 [ ! ] Static Value
 ---
 ### PLAYER LOOK SCRIPT
-- Cam [!] GameObject Variable
+- Cam [ ! ] GameObject Variable
   
 - **Camera Settings**
   - X Sensitivity = 20
