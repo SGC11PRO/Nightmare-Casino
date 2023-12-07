@@ -8,17 +8,27 @@ public class PlayerMotor : MonoBehaviour
     private CharacterController controller;
     private Vector3 playerVelocity;
 
-    private bool isGrounded;
+    [Header("Statements")]
+    public bool isGrounded = true;
+    public bool canUseHeadbob = true;
 
-    [Header("Movement")]
+    [Header("Debug Values")]
+    public float moveX;
+    public float moveZ;
+
+    [Header("Movement Settings")]
+    public bool sprint = false;
+
     [Range(0, 10)]
-    public float speed = 5f;
+    public float moveSpeed = 4f;
+
+    [Range(0, 10)]
+    public float sprintSpeed = 4.5f;
 
     [Range(0, 5)]
     public float jumpHeigh = 1f;
 
-
-    [Header("Physics")]
+    [Header("Physics Settings")]
     public float gravity = -9.8f;
 
     void Start()
@@ -41,8 +51,21 @@ public class PlayerMotor : MonoBehaviour
         moveDirection.x = input.x; //Asigna el valor del input.x al eje x del vector
         moveDirection.z = input.y; //[!] IMPORTANTE : moveDirection.Z (y no "moveDirection.Y") [!]
 
+        //Variables globales
+        moveX = moveDirection.x;
+        moveZ = moveDirection.z;
+
         //Aplicar el vector de moveDirection a una función "Move" ya implementada dentro del Character Controller
-        controller.Move(transform.TransformDirection(moveDirection) * speed * Time.deltaTime);
+        //Movimiento normal
+        controller.Move(transform.TransformDirection(moveDirection) * moveSpeed * Time.deltaTime);
+
+
+        //Movimiento Sprint
+        //comprueba el valor de "sprint"  [!] el cual es asignado en el FixedUpdate del InputManager [!]
+        if(sprint == true)
+        {
+            controller.Move(transform.TransformDirection(moveDirection) * sprintSpeed * Time.deltaTime);
+        }
 
 
         //Aplicar Gravedad
@@ -57,8 +80,11 @@ public class PlayerMotor : MonoBehaviour
 
         controller.Move(playerVelocity * Time.deltaTime);
 
-        Debug.Log("[ ! ] On Floor : " + isGrounded);
+        //debug
+        //Debug.Log("[ ! ] Player Sprint : " + sprint);
     }
+
+    //Sprint
 
 
     //Salto
